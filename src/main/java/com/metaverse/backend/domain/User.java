@@ -12,26 +12,31 @@ import java.time.LocalDateTime;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 PK
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // 로그인 아이디 (user_id)
     @Column(nullable = false, unique = true)
-    private String username; // 사용자 아이디
+    private String userId;
+
+    // 사용자 이름
+    @Column(nullable = false)
+    private String username;
 
     @Column(nullable = false)
-    private String password; // 비밀번호
+    private String password;
 
     @Column(nullable = false, unique = true)
-    private String email; // 이메일
+    private String email;
 
-    private LocalDate birthday; // 생년월일
-    private String gender;      // 성별
+    private LocalDate birthday;
+    private String gender;
 
     @CreationTimestamp
-    private LocalDateTime createdAt; // 생성일 자동 기록
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime modifiedAt; // 수정일 자동 기록
+    private LocalDateTime modifiedAt;
 
     // 기본 생성자
     public User() {}
@@ -39,6 +44,9 @@ public class User {
     // Getter & Setter
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
 
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }

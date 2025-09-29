@@ -10,23 +10,19 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    // 비밀번호 암호화용 Bean 등록
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    // Spring Security 설정
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // CSRF 비활성화 (API 서버니까)
+                .csrf(csrf -> csrf.disable()) // CSRF 비활성화 (테스트용)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/users/register").permitAll() // 회원가입 허용
-                        .requestMatchers("/api/users/login").permitAll()    // 로그인 허용
+                        .requestMatchers("/api/users/register", "/api/users/login").permitAll() // 회원가입 & 로그인 허용
                         .anyRequest().authenticated() // 나머지는 인증 필요
                 );
-
         return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

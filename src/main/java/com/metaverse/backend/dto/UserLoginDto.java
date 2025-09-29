@@ -1,16 +1,16 @@
 package com.metaverse.backend.dto;
 
 public class UserLoginDto {
-    private String username;
-    private String password;
+    private String userId;   // 로그인용 아이디
+    private String password; // 비밀번호
 
     // Getter & Setter
-    public String getUsername() {
-        return username;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getPassword() {
