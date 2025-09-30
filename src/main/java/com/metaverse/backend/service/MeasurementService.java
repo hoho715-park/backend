@@ -8,6 +8,8 @@ import com.metaverse.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -46,5 +48,31 @@ public class MeasurementService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return measurementRepository.findByUser(user);
+    }
+
+    // 특정 사용자 → 기록한 날짜만 반환
+    public List<String> getMeasurementDates(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return measurementRepository.findByUser(user).stream()
+                .map(m -> m.getCreatedAt().toLocalDate())   // LocalDate 변환
+                .map(LocalDate::toString)                  // yyyy-MM-dd
+                .distinct()
+                .toList();
+    }
+
+    // 특정 날짜의 기록 반환
+    public List<Measurement> getMeasurementsByDate(Long userId, String date) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // ✅ yyyy-MM-dd 포맷 강제
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate targetDate = LocalDate.parse(date, formatter);
+
+        return measurementRepository.findByUser(user).stream()
+                .filter(m -> m.getCreatedAt().toLocalDate().isEqual(targetDate))
+                .toList();
     }
 }

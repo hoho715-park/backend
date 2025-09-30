@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/measurements")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173") // ✅ React 주소에서만 접근 허용
+@CrossOrigin(origins = "http://localhost:5173")
 public class MeasurementController {
 
     private final MeasurementService measurementService;
@@ -26,5 +26,19 @@ public class MeasurementController {
     @GetMapping("/{userId}")
     public List<Measurement> getMeasurements(@PathVariable Long userId) {
         return measurementService.getMeasurements(userId);
+    }
+
+    // 특정 사용자(userId)의 측정한 날짜 리스트 조회
+    @GetMapping("/{userId}/dates")
+    public List<String> getMeasurementDates(@PathVariable Long userId) {
+        return measurementService.getMeasurementDates(userId);
+    }
+
+    // 특정 사용자(userId)의 특정 날짜별 측정 기록 조회
+    @GetMapping("/{userId}/by-date")
+    public List<Measurement> getMeasurementsByDate(
+            @PathVariable Long userId,
+            @RequestParam String date) {
+        return measurementService.getMeasurementsByDate(userId, date);
     }
 }
